@@ -11,7 +11,7 @@ Also you are required implement some innovative ideas that will make your projec
 
 Your app will be judged on the basis of usability, UI/UX, bug fixes, features implementation, & innovation.
 
-FEATURE LINK : 
+FEATURE LINK : bit.ly/42ZwGOd
 
 ADD YOUR OWN FIREBASE file (google-services.json) in android > app
 
