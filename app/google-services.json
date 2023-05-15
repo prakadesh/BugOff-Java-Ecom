@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "363046243295",
+    "project_id": "buggies-404-bugoff",
+    "storage_bucket": "buggies-404-bugoff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:363046243295:android:5a116ecbb8ea241011126a",
+        "android_client_info": {
+          "package_name": "com.example.e_commerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "363046243295-dv6pk7san2dn5qqhuvkaovji45s5kjdd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA40qx6XJoVI0KydBXHcHPgktfl2XMH6zQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "363046243295-dv6pk7san2dn5qqhuvkaovji45s5kjdd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
