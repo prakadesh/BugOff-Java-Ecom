@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,6 +109,8 @@ public class SignUp extends Fragment {
 
         if(!email.equals("") && !password.equals("") && !phone.equals("") && !name.equals("") && !address.equals("")&&
         !password.equals("#")&&!password.equals("@")&&!password.equals("%")&&!password.equals("^")&&!password.equals("&"))
+
+
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {

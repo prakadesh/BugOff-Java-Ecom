@@ -37,11 +37,12 @@ import java.util.Objects;
 public class LogIn extends Fragment {
 
     private TextView don_t_have_acc;
-    private Button btnLogInFragment;
+    private Button btnLogInFragment,google_login;
     private FirebaseAuth mAuth;
 
     private TextInputEditText emailTIETLI;
     private TextInputEditText passwordTIETLI;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
