@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.e_commerce.R;
@@ -22,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -31,6 +33,8 @@ import java.util.Objects;
 public class SignUp extends Fragment {
 
     private ImageView backBtnIVSignUp;
+
+    private TextView signinredirect;
     private Button createAccountBtn;
     private FirebaseAuth mAuth;
     private TextInputEditText userNameTIET;
@@ -60,6 +64,14 @@ public class SignUp extends Fragment {
                 newUserSignUp();
             }
         });
+        signinredirect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragmentTransaction(new LogIn(),R.anim.neg_100_to_pos_0,R.anim.pos_0_to_pos_100);
+
+            }
+        });
+
 
         return view;
     }
@@ -68,6 +80,7 @@ public class SignUp extends Fragment {
         backBtnIVSignUp=view.findViewById(R.id.backBtnIVSignUp);
         createAccountBtn=view.findViewById(R.id.createAccountBtn);
         mAuth = FirebaseAuth.getInstance();
+        signinredirect=view.findViewById(R.id.textviewhaveacc);
 
         userNameTIET=view.findViewById(R.id.userNameTIET);
         phoneTIET=view.findViewById(R.id.phoneTIET);
@@ -99,6 +112,12 @@ public class SignUp extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        firebaseUser.sendEmailVerification();
+                        Toast.makeText(getContext(), "You have successfully Signed Up,Check your email to complete verification", Toast.LENGTH_SHORT).show();
+
+
+
                         // Sign in success, update UI with the signed-in user's information
                         USER_MODEL myUserModel = new USER_MODEL(name,email,phone,address);
                         FirebaseDatabase db= FirebaseDatabase.getInstance();
@@ -111,7 +130,7 @@ public class SignUp extends Fragment {
                         passwordTIETSU.setText("");
                         addressTIETSU.setText("");
 
-                        Toast.makeText(getContext(), "You have successfully Signed Up", Toast.LENGTH_SHORT).show();
+
                         fragmentTransaction(new LogIn(),R.anim.neg_100_to_pos_0,R.anim.pos_0_to_pos_100);
 
 

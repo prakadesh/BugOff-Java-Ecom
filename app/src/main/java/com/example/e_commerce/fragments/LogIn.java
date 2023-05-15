@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -95,60 +96,66 @@ public class LogIn extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Intent intent = new Intent(requireContext(), HomeScreenActivity.class);
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        if (firebaseUser.isEmailVerified()){
+                            // Sign in success, update UI with the signed-in user's information
+                            Intent intent = new Intent(requireContext(), HomeScreenActivity.class);
 
 
-                        FirebaseDatabase db= FirebaseDatabase.getInstance();
-                        DatabaseReference node=db.getReference("Users").child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
-                        node.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                if(task.isSuccessful()){
-                                    if(task.getResult().exists()){
-                                        DataSnapshot dataSnapshot = task.getResult();
-                                        String name= (String) dataSnapshot.child("name").getValue();
-                                        String email= (String) dataSnapshot.child("email").getValue();
-                                        String phone= (String) dataSnapshot.child("phone").getValue();
-                                        String address= (String) dataSnapshot.child("address").getValue();
+                            FirebaseDatabase db= FirebaseDatabase.getInstance();
+                            DatabaseReference node=db.getReference("Users").child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
+                            node.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    if(task.isSuccessful()){
+                                        if(task.getResult().exists()){
+                                            DataSnapshot dataSnapshot = task.getResult();
+                                            String name= (String) dataSnapshot.child("name").getValue();
+                                            String email= (String) dataSnapshot.child("email").getValue();
+                                            String phone= (String) dataSnapshot.child("phone").getValue();
+                                            String address= (String) dataSnapshot.child("address").getValue();
+                                            dialog.dismiss();
+
+                                            SharedPreferences sp = requireActivity().getSharedPreferences("CREDENTIALS", Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sp.edit();
+                                            editor.putString("NAME",name);
+                                            editor.putString("EMAIL",email);
+                                            editor.putString("PHONE",phone);
+                                            editor.putString("ADDRESS",address);
+                                            editor.apply();
+
+
+                                            startActivity(intent);
+                                            //Log.d("AddressOf",address);
+                                            requireActivity().finish();
+                                        }else {
+                                            dialog.dismiss();
+                                            Log.d("USERLOG","User does not exist");
+                                            requireActivity().finish();
+                                        }
+                                    }else{
                                         dialog.dismiss();
-
-                                        SharedPreferences sp = requireActivity().getSharedPreferences("CREDENTIALS", Context.MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = sp.edit();
-                                        editor.putString("NAME",name);
-                                        editor.putString("EMAIL",email);
-                                        editor.putString("PHONE",phone);
-                                        editor.putString("ADDRESS",address);
-                                        editor.apply();
-
-
-                                        startActivity(intent);
-                                        //Log.d("AddressOf",address);
-                                        requireActivity().finish();
-                                    }else {
-                                        dialog.dismiss();
-                                        Log.d("USERLOG","User does not exist");
+                                        Toast.makeText(requireContext(), "Problem", Toast.LENGTH_SHORT).show();
                                         requireActivity().finish();
                                     }
-                                }else{
-                                    dialog.dismiss();
-                                    Toast.makeText(requireContext(), "Problem", Toast.LENGTH_SHORT).show();
-                                    requireActivity().finish();
                                 }
-                            }
-                        });
+                            });
+
+
 
 
 
                     } else {
+                            firebaseUser.sendEmailVerification();
+                            mAuth.signOut();
                         // If sign in fails, display a message to the user.
                         dialog.dismiss();
-                        Toast.makeText(requireContext(), "Failed to login", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "Failed to login,check your email", Toast.LENGTH_SHORT).show();
 
                     }
                 }
-            });
-        else {
+            }
+            });else {
             dialog.dismiss();
             Toast.makeText(requireContext(), "Fill all the fields", Toast.LENGTH_SHORT).show();
         }
