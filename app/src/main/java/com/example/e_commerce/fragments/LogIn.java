@@ -11,16 +11,22 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.e_commerce.activity.HomeScreenActivity;
 import com.example.e_commerce.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -36,12 +42,19 @@ import java.util.Objects;
 
 public class LogIn extends Fragment {
 
-    private TextView don_t_have_acc;
+    private TextView don_t_have_acc,forgotpass;
     private Button btnLogInFragment,google_login;
     private FirebaseAuth mAuth;
+    private static final int RC_SIGN_IN = 123;
+    private GoogleSignInClient mGoogleSignInClient;
+    private ProgressDialog mProgressDialog;
 
     private TextInputEditText emailTIETLI;
     private TextInputEditText passwordTIETLI;
+
+    private ImageView hidepassword;
+    private forgot_pwd forgotPwdFragment = new forgot_pwd();
+
 
 
     @Override
@@ -50,6 +63,26 @@ public class LogIn extends Fragment {
 
         View view=inflater.inflate(R.layout.fragment_log_in, container, false);
         initialize(view);
+
+        google_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        //forgot_password
+
+        forgotpass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(requireContext(), "You can reset your Password now!", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getActivity(),forgot_pwd.class);
+                startActivity(i);
+            }
+        });
+
+
 
         don_t_have_acc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +105,14 @@ public class LogIn extends Fragment {
         btnLogInFragment=view.findViewById(R.id.btnLogInFragment);
         emailTIETLI=view.findViewById(R.id.emailTIETLI);
         passwordTIETLI=view.findViewById(R.id.passwordTIETLI);
+        google_login=view.findViewById(R.id.button);
+        forgotpass=view.findViewById(R.id.text_forgotpass);
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
     }
 
 
@@ -83,6 +124,8 @@ public class LogIn extends Fragment {
         fragmentTransaction.replace(R.id.frameLayoutLogSignActivity,fragment);
         fragmentTransaction.commit();
     }
+
+
 
     private void existingUserLogIn(){
         final ProgressDialog dialog = new ProgressDialog(requireContext());

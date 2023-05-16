@@ -70,6 +70,7 @@
                 android:layout_marginEnd="@dimen/dim_38"
                 android:hint="@string/password"
 
+
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/passwordTIETLI"
@@ -85,6 +86,7 @@
 
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="@dimen/dim_38"
+                android:id="@+id/text_forgotpass"
                 android:fontFamily="@font/poppins_medium"
                 android:text="@string/forgotPassword"
                 android:textColor="#F34E4A4A"
@@ -92,6 +94,9 @@
                 android:textStyle="bold"
                 android:layout_gravity="end"
                  />
+
+
+
 
             <Button
                 android:id="@+id/btnLogInFragment"
@@ -111,17 +116,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim_625"
-            android:fontFamily="@font/poppins_medium"
-            android:text="@string/orConnectVia"
-            android:textColor="#858484"
-            android:textSize="@dimen/font_size_16"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
 
         <Button
