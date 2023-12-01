@@ -1,5 +1,5 @@
-
-
+## android application developement
+this repo contain source files for a java application which is built during a hackathon 
 Firebase Schema(access with vitbhopal email only): https://drive.google.com/file/d/12c_PINxfYLMe4RStOSpuvSe6y6Q9nm_d/view
 
 Android App Instructions
